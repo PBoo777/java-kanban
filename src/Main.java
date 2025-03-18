@@ -1,3 +1,9 @@
+import TaskService.Manager;
+import TaskService.Status;
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
+
 public class Main {
     public static void main(String[] args) {
         Task task1 = new Task("Учёба", "Пройти тему в Практикуме", Status.IN_PROGRESS);
@@ -11,21 +17,21 @@ public class Main {
         SubTask subTask3 = new SubTask("На работе", "Работать", Status.NEW, epic2);
         SubTask subTask4 = new SubTask("Санузел", "Поклеить плитку", Status.NEW, epic1);
 
-        Manager.createSomeTask(task1);
-        Manager.createSomeTask(task2);
-        Manager.createSomeTask(task3);
-        Manager.createSomeTask(epic1);
-        Manager.createSomeTask(epic2);
-        Manager.createSomeTask(subTask1);
-        Manager.createSomeTask(subTask2);
-        Manager.createSomeTask(subTask3);
-        Manager.createSomeTask(subTask4);
+        Manager.createTask(task1);
+        Manager.createTask(task2);
+        Manager.createTask(task3);
+        Manager.createTask(epic1);
+        Manager.createTask(epic2);
+        Manager.createTask(subTask1);
+        Manager.createTask(subTask2);
+        Manager.createTask(subTask3);
+        Manager.createTask(subTask4);
 
-        Manager.printAllTasks("Task");
-        Manager.printAllTasks("Epic");
-        Manager.printAllTasks("SubTask");
+        Manager.printAllTasks("Tasks.Task");
+        Manager.printAllTasks("Tasks.Epic");
+        Manager.printAllTasks("Tasks.SubTask");
 
-        System.out.println(Manager.getInstance(8));
+        System.out.println(Manager.getTaskById(8));
 
     }
 }
