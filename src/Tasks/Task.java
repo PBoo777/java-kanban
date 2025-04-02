@@ -66,4 +66,8 @@ public class Task {
     public String getDescription() {
         return description;
     }
+
+    public Status getStatus() {
+        return status;
+    }
 }
