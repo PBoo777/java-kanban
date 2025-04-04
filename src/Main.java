@@ -30,10 +30,32 @@ public class Main {
         inMemoryTaskManager.createTask(subTask4);
 
         inMemoryTaskManager.printAllTasks("Tasks.Task");
+        System.out.println("    ----    ");
         inMemoryTaskManager.printAllTasks("Tasks.Epic");
+        System.out.println("    ----    ");
         inMemoryTaskManager.printAllTasks("Tasks.SubTask");
+        System.out.println("    ----    ");
+
 
         System.out.println(inMemoryTaskManager.getTaskById(8));
+        System.out.println("    ----    ");
+
+        inMemoryTaskManager.printAllTasksByEpic(epic1);
+        System.out.println("    ----    ");
+
+        inMemoryTaskManager.removeTaskById(8);
+        inMemoryTaskManager.removeAllTasks("Tasks.Task");
+
+        inMemoryTaskManager.printAllTasks("Tasks.Task");
+        System.out.println("    ----    ");
+
+        inMemoryTaskManager.printAllTasks("Tasks.Epic");
+        System.out.println("    ----    ");
+
+        inMemoryTaskManager.printAllTasks("Tasks.SubTask");
+        System.out.println("    ----    ");
+
+
 
     }
 }
