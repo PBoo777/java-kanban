@@ -2,6 +2,7 @@ package TaskService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import Tasks.*;
 
@@ -15,57 +16,43 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public int createTask(Task task) {
-        switch (task.getClass().getName()) {
-            case "Tasks.Task":
-                if (taskHashMap.containsValue(task)) return task.getId();
-                task.setId(++id);
-                taskHashMap.put(task.getId(), task);
-                return task.getId();
-            case "Tasks.Epic":
-                Epic epic = (Epic) task;
-                if (epicHashMap.containsValue(epic)) return epic.getId();
-                epic.setId(++id);
-                epicHashMap.put(epic.getId(), epic);
-                epic.updateStatus();
-                return epic.getId();
-            case "Tasks.SubTask":
-                SubTask subTask = (SubTask) task;
-                if (taskHashMap.containsValue(subTask)) return subTask.getId();
-                subTask.setId(++id);
-                subTaskHashMap.put(subTask.getId(), subTask);
-                if (epicHashMap.containsValue(subTask.getOwner())) {
-                    subTask.getOwner().setOneSubTask(subTask);
-                } else {
-                    Epic newE = subTask.getOwner();
-                    newE.setId(++id);
-                    newE.setOneSubTask(subTask);
-                    epicHashMap.put(newE.getId(), newE);
-                }
-                return subTask.getId();
-            default:
-                System.out.println("Такой тип задач не предусмотрен");
+        if (task instanceof Epic epic) {
+            if (epicHashMap.containsValue(epic)) return epic.getId();
+            epic.setId(++id);
+            epicHashMap.put(epic.getId(), epic);
+            epic.updateStatus();
+            return epic.getId();
+        } else if (task instanceof SubTask subTask) {
+            if (taskHashMap.containsValue(subTask)) return subTask.getId();
+            subTask.setId(++id);
+            subTaskHashMap.put(subTask.getId(), subTask);
+            if (epicHashMap.containsValue(subTask.getOwner())) {
+                subTask.getOwner().setOneSubTask(subTask);
+            } else {
+                Epic newE = subTask.getOwner();
+                newE.setId(++id);
+                newE.setOneSubTask(subTask);
+                epicHashMap.put(newE.getId(), newE);
+            }
+            return subTask.getId();
+        } else {
+            if (taskHashMap.containsValue(task)) return task.getId();
+            task.setId(++id);
+            taskHashMap.put(task.getId(), task);
+            return task.getId();
         }
-        return -1;
     }
 
     @Override
     public void updateTask(Task task, int Id) {
-        switch (task.getClass().getName()) {
-            case "Tasks.Task":
-                taskHashMap.put(Id, task);
-                return;
-            case "Tasks.Epic":
-                Epic epic = (Epic) task;
-                epicHashMap.put(Id, epic);
-                epic.updateStatus();
-                return;
-            case "Tasks.SubTask":
-                SubTask subTask = (SubTask) task;
-                subTaskHashMap.put(Id, subTask);
-                subTask.getOwner().setOneSubTask(subTask);
-                return;
-            default:
-                System.out.println("Такой тип задач не предусмотрен");
+        if (task instanceof Epic epic) {
+            epicHashMap.put(Id, epic);
+            epic.updateStatus();
+        } else if (task instanceof SubTask subTask) {
+            subTaskHashMap.put(Id, subTask);
+            subTask.getOwner().setOneSubTask(subTask);
+        } else {
+            taskHashMap.put(Id, task);
         }
     }
 
@@ -141,7 +128,7 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 

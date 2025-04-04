@@ -2,10 +2,11 @@ package TaskService;
 
 import Tasks.Task;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    ArrayList<Task> lastTenTaskViews = new ArrayList<>();
+    List<Task> lastTenTaskViews = new ArrayList<>();
 
     @Override
     public void add(Task task) {
@@ -14,7 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return lastTenTaskViews;
     }
 }

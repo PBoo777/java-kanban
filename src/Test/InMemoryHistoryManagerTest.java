@@ -1,6 +1,10 @@
-package TaskService;
+package Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import TaskService.Managers;
+import TaskService.Status;
+import TaskService.TaskManager;
 import Tasks.Epic;
 import Tasks.SubTask;
 import Tasks.Task;
@@ -58,5 +62,29 @@ class InMemoryHistoryManagerTest {
 
         assertEquals(epic.getSubTasks(), historyEpic.getSubTasks(), "Подзадачи не совпадают");
         assertEquals(epic, historyEpic, "Предыдущая версия задачи не сохраняется.");
+    }
+
+    @Test
+    public void  historyShouldContainMax10Items() {
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        String name;
+        String description;
+        Status status;
+        int taskId;
+        for (int i = 0; i < 12; i++) {
+            name = "Name" + i;
+            description = "Description" + i;
+            if (i % 3 == 0) {
+                status = Status.NEW;
+            } else if (i % 2 == 0) {
+                status = Status.IN_PROGRESS;
+            } else {
+                status = Status.DONE;
+            }
+            taskId = inMemoryTaskManager.createTask(new Task(name, description, status));
+            inMemoryTaskManager.getTaskById(taskId);
+        }
+        assertEquals(10, inMemoryTaskManager.getHistory().size()
+                , "Количество сохранённых задач в истории отлично от 10");
     }
 }

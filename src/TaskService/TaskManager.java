@@ -2,8 +2,7 @@ package TaskService;
 
 import Tasks.Epic;
 import Tasks.Task;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -21,6 +20,6 @@ public interface TaskManager {
 
     void printAllTasksByEpic(Epic epic);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
 }

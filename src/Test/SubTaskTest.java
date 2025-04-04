@@ -1,9 +1,12 @@
-package Tasks;
+package Test;
 
 import TaskService.Managers;
 import TaskService.Status;
 import TaskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
+
+import Tasks.Epic;
+import Tasks.SubTask;
 import org.junit.jupiter.api.Test;
 
 class SubTaskTest {
@@ -18,7 +21,8 @@ class SubTaskTest {
 
         assertNotNull(savedSubTask, "Задача не найдена.");
         assertEquals("Tasks.SubTask", savedSubTask.getClass().getName(), "Задача другого типа.");
-        assertEquals(subTask, savedSubTask, "Задачи не совпадают.");
+        assertEquals(subTask.getId(), savedSubTask.getId(), "ID задач не совпадают.");
         assertEquals(subTask.getOwner(), savedSubTask.getOwner(), "Эпик не совпадает.");
+        assertEquals(subTask, savedSubTask, "Задачи не совпадают.");
     }
 }

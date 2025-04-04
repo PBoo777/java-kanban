@@ -1,9 +1,11 @@
-package Tasks;
+package Test;
 
 import TaskService.Managers;
 import TaskService.Status;
 import TaskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
+
+import Tasks.Task;
 import org.junit.jupiter.api.Test;
 
 class TaskTest {
@@ -18,6 +20,7 @@ class TaskTest {
 
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals("Tasks.Task", savedTask.getClass().getName(), "Задача другого типа.");
+        assertEquals(task.getId(), savedTask.getId(), "ID задач не совпадают.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
     }
 }

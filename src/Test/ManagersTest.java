@@ -1,7 +1,9 @@
-package TaskService;
+package Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import TaskService.Managers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ManagersTest {
@@ -9,7 +11,7 @@ class ManagersTest {
     @Test
     public void ManagersReturnNotNullObjects() {
 
-        assertNotNull(Managers.getDefault(), "Объект не найден.");
+        Assertions.assertNotNull(Managers.getDefault(), "Объект не найден.");
         assertEquals("TaskService.InMemoryTaskManager", Managers.getDefault().getClass().getName()
                 , "Объект другого типа.");
         assertNotNull(Managers.getDefaultHistory(), "Объект не найден.");
