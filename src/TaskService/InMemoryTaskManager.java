@@ -16,42 +16,46 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public int createTask(Task task) {
         if (task instanceof Epic epic) {
-            if (epicHashMap.containsValue(epic)) return epic.getId();
-            epic.setId(++id);
-            epicHashMap.put(epic.getId(), epic);
-            epic.updateStatus();
+            if (!epicHashMap.containsValue(epic)) {
+                epic.setId(++id);
+                epicHashMap.put(epic.getId(), epic);
+                epic.updateStatus();
+            }
             return epic.getId();
         } else if (task instanceof SubTask subTask) {
-            if (taskHashMap.containsValue(subTask)) return subTask.getId();
-            subTask.setId(++id);
-            subTaskHashMap.put(subTask.getId(), subTask);
-            if (epicHashMap.containsValue(subTask.getOwner())) {
+            if (!taskHashMap.containsValue(subTask)) {
+                subTask.setId(++id);
+                subTaskHashMap.put(subTask.getId(), subTask);
+                if (!epicHashMap.containsValue(subTask.getOwner())) {
+                    subTask.getOwner().setId(++id);
+                    epicHashMap.put(subTask.getOwner().getId(), subTask.getOwner());
+                }
                 subTask.getOwner().setOneSubTask(subTask);
-            } else {
-                Epic newE = subTask.getOwner();
-                newE.setId(++id);
-                newE.setOneSubTask(subTask);
-                epicHashMap.put(newE.getId(), newE);
             }
             return subTask.getId();
         } else {
-            if (taskHashMap.containsValue(task)) return task.getId();
-            task.setId(++id);
-            taskHashMap.put(task.getId(), task);
+            if (!taskHashMap.containsValue(task)) {
+                task.setId(++id);
+                taskHashMap.put(task.getId(), task);
+            }
             return task.getId();
         }
     }
 
     @Override
-    public void updateTask(Task task, int Id) {
+    public void updateTask(Task task, int id) {
         if (task instanceof Epic epic) {
-            epicHashMap.put(Id, epic);
+            epicHashMap.put(id, epic);
             epic.updateStatus();
         } else if (task instanceof SubTask subTask) {
-            subTaskHashMap.put(Id, subTask);
+            subTaskHashMap.put(id, subTask);
             subTask.getOwner().setOneSubTask(subTask);
+            if (!epicHashMap.containsValue(subTask.getOwner())) {
+                subTask.getOwner().setId(++id);
+                epicHashMap.put(subTask.getOwner().getId(), subTask.getOwner());
+            }
         } else {
-            taskHashMap.put(Id, task);
+            taskHashMap.put(id, task);
         }
     }
 

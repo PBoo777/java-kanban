@@ -37,24 +37,31 @@ public class Epic extends Task {
     }
 
     public void updateStatus() {
-        if (getSubTasks().isEmpty()) return;
-        if (getSubTasks().size() == 1) {
-            setStatus(Objects.requireNonNull(getSubTasks().getFirst()).getStatus());
+        if (subTasks.isEmpty()) return;
+        if (subTasks.size() == 1) {
+            setStatus(Objects.requireNonNull(subTasks.getFirst()).getStatus());
             return;
         }
-        for (int i = 0; i < getSubTasks().size() - 1; i++) {
-            if (Objects.requireNonNull(getSubTasks().get(i)).getStatus()
-                    != Objects.requireNonNull(getSubTasks().get(i + 1)).getStatus()
-                    || Objects.requireNonNull(getSubTasks().get(i)).getStatus() == Status.IN_PROGRESS) {
+        for (int i = 0; i < subTasks.size() - 1; i++) {
+            if (Objects.requireNonNull(subTasks.get(i)).getStatus()
+                    != Objects.requireNonNull(subTasks.get(i + 1)).getStatus()
+                    || Objects.requireNonNull(subTasks.get(i)).getStatus() == Status.IN_PROGRESS) {
                 setStatus(Status.IN_PROGRESS);
                 return;
             }
         }
-        setStatus(Objects.requireNonNull(getSubTasks().getFirst()).getStatus());
+        setStatus(Objects.requireNonNull(subTasks.getFirst()).getStatus());
     }
 
-    public void setOneSubTask(SubTask subTask) {
-        if (!getSubTasks().contains(subTask)) getSubTasks().add(subTask);
+    public void setOneSubTask(SubTask newSubTask) {
+        for (int i = 0; i < subTasks.size(); i++) {
+            if (newSubTask.id == subTasks.get(i).id) {
+                subTasks.set(i, newSubTask);
+                updateStatus();
+                return;
+            }
+        }
+        subTasks.add(newSubTask);
         updateStatus();
     }
 
