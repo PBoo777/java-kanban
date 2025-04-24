@@ -7,55 +7,64 @@ import Tasks.*;
 
 public class InMemoryTaskManager implements TaskManager{
 
-    final HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    final HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
-    private int id = 0;
+    private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
+    private int id = 1;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public int createTask(Task task) {
         if (task instanceof Epic epic) {
             if (!epicHashMap.containsValue(epic)) {
-                epic.setId(++id);
-                epicHashMap.put(epic.getId(), epic);
-                epic.updateStatus();
+                Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+                newEpic.setSubTaskIds(epic.getSubTaskIds());
+                newEpic.setSubTaskStatuses(epic.getSubTaskStatuses());
+                newEpic.setId(++id);
+                newEpic.updateStatus();
+                epicHashMap.put(newEpic.getId(), newEpic);
+                return newEpic.getId();
             }
-            return epic.getId();
         } else if (task instanceof SubTask subTask) {
-            if (!taskHashMap.containsValue(subTask)) {
-                subTask.setId(++id);
-                subTaskHashMap.put(subTask.getId(), subTask);
-                if (!epicHashMap.containsValue(subTask.getOwner())) {
-                    subTask.getOwner().setId(++id);
-                    epicHashMap.put(subTask.getOwner().getId(), subTask.getOwner());
+            if (!subTaskHashMap.containsValue(subTask)) {
+                SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus()
+                        , epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
+                newSubTask.setId(++id);
+                subTaskHashMap.put(newSubTask.getId(), newSubTask);
+                if (newSubTask.getOwnerId() != 0) {
+                    epicHashMap.get(newSubTask.getOwnerId()).setOneSubTask(newSubTask);
                 }
-                subTask.getOwner().setOneSubTask(subTask);
+                return newSubTask.getId();
             }
-            return subTask.getId();
         } else {
             if (!taskHashMap.containsValue(task)) {
-                task.setId(++id);
-                taskHashMap.put(task.getId(), task);
+                Task newTask = new Task(task.getName(), task.getDescription(), task.getStatus());
+                newTask.setId(++id);
+                taskHashMap.put(newTask.getId(), newTask);
+                return newTask.getId();
             }
-            return task.getId();
         }
+        return -1;
     }
 
     @Override
     public void updateTask(Task task, int id) {
         if (task instanceof Epic epic) {
-            epicHashMap.put(id, epic);
-            epic.updateStatus();
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+            newEpic.setSubTaskIds(epic.getSubTaskIds());
+            newEpic.setSubTaskStatuses(epic.getSubTaskStatuses());
+            newEpic.updateStatus();
+            epicHashMap.put(id, newEpic);
         } else if (task instanceof SubTask subTask) {
-            subTaskHashMap.put(id, subTask);
-            subTask.getOwner().setOneSubTask(subTask);
-            if (!epicHashMap.containsValue(subTask.getOwner())) {
-                subTask.getOwner().setId(++id);
-                epicHashMap.put(subTask.getOwner().getId(), subTask.getOwner());
+            SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus()
+                    , epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
+            subTaskHashMap.put(id, newSubTask);
+            if (newSubTask.getOwnerId() != 0) {
+                epicHashMap.get(newSubTask.getOwnerId()).setOneSubTask(newSubTask);
             }
         } else {
-            taskHashMap.put(id, task);
+            Task newTask = new Task(task.getName(), task.getDescription(), task.getStatus());
+            taskHashMap.put(id, newTask);
         }
     }
 
@@ -102,37 +111,74 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public Task getTaskById(int id) {
         if (taskHashMap.containsKey(id)) {
-            historyManager.add(taskHashMap.get(id));
-            return taskHashMap.get(id);
+            Task newTask = new Task(taskHashMap.get(id).getName(), taskHashMap.get(id).getDescription()
+                    , taskHashMap.get(id).getStatus());
+            newTask.setId(id);
+            historyManager.add(newTask);
+            return newTask;
         }
         if (epicHashMap.containsKey(id)) {
-            historyManager.add(epicHashMap.get(id));
-            return epicHashMap.get(id);
+            Epic newEpic = new Epic(epicHashMap.get(id).getName(), epicHashMap.get(id).getDescription());
+            newEpic.setSubTaskIds(epicHashMap.get(id).getSubTaskIds());
+            newEpic.setSubTaskStatuses(epicHashMap.get(id).getSubTaskStatuses());
+            newEpic.updateStatus();
+            newEpic.setId(id);
+            historyManager.add(newEpic);
+            return newEpic;
         }
         if (subTaskHashMap.containsKey(id)) {
-            historyManager.add(subTaskHashMap.get(id));
-            return subTaskHashMap.get(id);
+            SubTask newSubTask = new SubTask(subTaskHashMap.get(id).getName(), subTaskHashMap.get(id).getDescription()
+                    , subTaskHashMap.get(id).getStatus(), subTaskHashMap.get(id).getOwnerId());
+            newSubTask.setId(id);
+            historyManager.add(newSubTask);
+            return newSubTask;
         }
         return null;
     }
 
     @Override
     public void removeTaskById(int id) {
+        if (subTaskHashMap.containsKey(id)) {
+            if (subTaskHashMap.get(id).getOwnerId() != 0) {
+                epicHashMap.get(subTaskHashMap.get(id).getOwnerId()).removeOneSubTask(subTaskHashMap.get(id));
+            }
+            subTaskHashMap.remove(id);
+        }
+        if (epicHashMap.containsKey(id)) {
+            for (Integer subTaskId : epicHashMap.get(id).getSubTaskIds()) {
+                subTaskHashMap.get(subTaskId).setOwnerId(0);
+            }
+            epicHashMap.remove(id);
+        }
         taskHashMap.remove(id);
-        epicHashMap.remove(id);
-        subTaskHashMap.remove(id);
     }
 
     @Override
     public void printAllTasksByEpic(Epic epic) {
-        for (SubTask subTask : epic.getSubTasks()) {
-            System.out.println(subTask);
+        for (Integer subTaskId : epicHashMap.get(id).getSubTaskIds()) {
+            System.out.println(subTaskHashMap.get(subTaskId));
         }
     }
 
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
+
+    public HashMap<Integer, Task> getTaskHashMap() {
+        return taskHashMap;
+    }
+
+    public HashMap<Integer, Epic> getEpicHashMap() {
+        return epicHashMap;
+    }
+
+    public HashMap<Integer, SubTask> getSubTaskHashMap() {
+        return subTaskHashMap;
     }
 
 }

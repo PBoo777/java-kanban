@@ -18,12 +18,13 @@ class TaskTest {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task = new Task("Name1", "Description1", Status.NEW);
         int TaskId = inMemoryTaskManager.createTask(task);
-        Task savedTask = inMemoryTaskManager.getTaskById(TaskId);
+        Task savedTask1 = inMemoryTaskManager.getTaskById(TaskId);
+        Task savedTask2 = inMemoryTaskManager.getTaskById(TaskId);
 
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals("Tasks.Task", savedTask.getClass().getName(), "Задача другого типа.");
-        assertEquals(task.getId(), savedTask.getId(), "ID задач не совпадают.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
+        assertNotNull(savedTask1, "Задача не найдена.");
+        assertEquals("Tasks.Task", savedTask1.getClass().getName(), "Задача другого типа.");
+        assertEquals(savedTask1.getId(), savedTask2.getId(), "ID задач не совпадают.");
+        assertEquals(savedTask1, savedTask2, "Задачи не совпадают.");
     }
 
     @Test
@@ -50,9 +51,11 @@ class TaskTest {
         }
         Random rnd = new Random();
         int index = rnd.nextInt(20);
+        Task task1 = inMemoryTaskManager.getTaskById(idArray[index]);
+        Task task2 = inMemoryTaskManager.getTaskById(idArray[index]);
 
-        assertEquals(inMemoryTaskManager.getTaskById(idArray[index]).getId(), tasks.get(index).getId()
+        assertEquals(task1.getId(), task2.getId()
                 , "ID задач совпадают");
-        assertEquals(inMemoryTaskManager.getTaskById(idArray[index]), tasks.get(index), "Задачи совпадают");
+        assertEquals(task1, task2, "Задачи совпадают");
     }
 }

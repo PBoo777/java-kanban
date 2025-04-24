@@ -64,11 +64,22 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String Description) {
+        this.description = Description;
     }
 
     public Status getStatus() {
         return status;
     }
+
+    public void setStatus(Status status) { this.status = status; }
+
 }

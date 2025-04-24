@@ -13,14 +13,16 @@ class EpicTest {
     @Test
     public void EpicsCorrectSavedAndReturnById() {
 
-        Epic epic = new Epic("Name1", "Description1");
-        int epicId = inMemoryTaskManager.createTask(epic);
-        Epic savedEpic = (Epic) inMemoryTaskManager.getTaskById(epicId);
+        Epic originEpic = new Epic("Name1", "Description1");
+        int epicId = inMemoryTaskManager.createTask(originEpic);
+        Epic savedEpic1 = (Epic) inMemoryTaskManager.getTaskById(epicId);
+        Epic savedEpic2 = (Epic) inMemoryTaskManager.getTaskById(epicId);
 
-        assertNotNull(savedEpic, "Задача не найдена.");
-        assertEquals("Tasks.Epic", savedEpic.getClass().getName(), "Задача другого типа.");
-        assertEquals(epic.getId(), savedEpic.getId(), "ID задач не совпадают.");
-        assertEquals(epic.getSubTasks(), savedEpic.getSubTasks(), "Списки подзадач не совпадают");
-        assertEquals(epic, savedEpic, "Задачи не совпадают.");
+        assertNotNull(savedEpic1, "Задача не найдена.");
+        assertEquals("Tasks.Epic", savedEpic1.getClass().getName(), "Задача другого типа.");
+        assertEquals(savedEpic1.getId(), savedEpic2.getId(), "ID задач не совпадают.");
+        assertEquals(savedEpic1.getSubTaskIds(), savedEpic2.getSubTaskIds(), "Списки подзадач не совпадают");
+        assertEquals(savedEpic1.getSubTaskStatuses(), savedEpic2.getSubTaskStatuses(), "Списки подзадач не совпадают");
+        assertEquals(savedEpic1, savedEpic2, "Задачи не совпадают.");
     }
 }

@@ -6,22 +6,23 @@ import java.util.Objects;
 
 public class Epic extends Task {
 
-    private ArrayList<SubTask> subTasks = new ArrayList<>();
+    private ArrayList<Status> subTaskStatuses = new ArrayList<>();
+    private ArrayList<Integer> subTaskIds = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
     }
 
-    public ArrayList<SubTask> getSubTasks() {
-        return subTasks;
+    public ArrayList<Integer> getSubTaskIds() {
+        return new ArrayList<>(subTaskIds);
+    }
+
+    public void setSubTaskIds(ArrayList<Integer> subTaskIds) {
+        this.subTaskIds = subTaskIds;
     }
 
     @Override
     public String toString() {
-        ArrayList<Integer> subTaskIds = new ArrayList<>();
-        for (SubTask subTask : subTasks) {
-            subTaskIds.add(subTask.getId());
-        }
         return "Tasks.Epic {" +
                 "subTaskIds = " + subTaskIds +
                 ", description = '" + description + '\'' +
@@ -31,41 +32,53 @@ public class Epic extends Task {
                 '}';
     }
 
-    public void setSubTasks(ArrayList<SubTask> SubTasks) {
-        this.subTasks = SubTasks;
-        updateStatus();
-    }
-
     public void updateStatus() {
-        if (subTasks.isEmpty()) return;
-        if (subTasks.size() == 1) {
-            setStatus(Objects.requireNonNull(subTasks.getFirst()).getStatus());
+        if (subTaskStatuses.isEmpty()) return;
+        if (subTaskStatuses.size() == 1) {
+            setStatus(Objects.requireNonNull(subTaskStatuses.getFirst()));
             return;
         }
-        for (int i = 0; i < subTasks.size() - 1; i++) {
-            if (Objects.requireNonNull(subTasks.get(i)).getStatus()
-                    != Objects.requireNonNull(subTasks.get(i + 1)).getStatus()
-                    || Objects.requireNonNull(subTasks.get(i)).getStatus() == Status.IN_PROGRESS) {
+        for (int i = 0; i < subTaskStatuses.size() - 1; i++) {
+            if (Objects.requireNonNull(subTaskStatuses.get(i))
+                    != Objects.requireNonNull(subTaskStatuses.get(i + 1))
+                    || Objects.requireNonNull(subTaskStatuses.get(i)) == Status.IN_PROGRESS) {
                 setStatus(Status.IN_PROGRESS);
                 return;
             }
         }
-        setStatus(Objects.requireNonNull(subTasks.getFirst()).getStatus());
+        setStatus(Objects.requireNonNull(subTaskStatuses.getFirst()));
     }
 
     public void setOneSubTask(SubTask newSubTask) {
-        for (int i = 0; i < subTasks.size(); i++) {
-            if (newSubTask.id == subTasks.get(i).id) {
-                subTasks.set(i, newSubTask);
+        for (int i = 0; i < subTaskIds.size(); i++) {
+            if (newSubTask.id == subTaskIds.get(i)) {
+                subTaskStatuses.set(i, newSubTask.status);
                 updateStatus();
                 return;
             }
         }
-        subTasks.add(newSubTask);
+        subTaskIds.add(newSubTask.id);
+        subTaskStatuses.add(newSubTask.status);
         updateStatus();
     }
 
-    private void setStatus(Status status) {
-        this.status = status;
+    public void removeOneSubTask(SubTask removedSubTask) {
+        for (int i = 0; i < subTaskIds.size(); i++) {
+            if (removedSubTask.id == subTaskIds.get(i)) {
+                subTaskStatuses.remove(i);
+                updateStatus();
+                break;
+            }
+        }
+        Integer i = removedSubTask.id;
+        subTaskIds.remove(i);
+    }
+
+    public ArrayList<Status> getSubTaskStatuses() {
+        return new ArrayList<>(subTaskStatuses);
+    }
+
+    public void setSubTaskStatuses(ArrayList<Status> subTaskStatuses) {
+        this.subTaskStatuses = subTaskStatuses;
     }
 }
