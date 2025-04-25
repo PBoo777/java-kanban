@@ -1,4 +1,4 @@
-package TaskService;
+package taskservice;
 
 import java.util.HashMap;
 import java.util.List;

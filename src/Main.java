@@ -1,6 +1,6 @@
-import TaskService.InMemoryTaskManager;
-import TaskService.Status;
-import TaskService.TaskManager;
+import taskservice.InMemoryTaskManager;
+import taskservice.Status;
+import taskservice.TaskManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;

@@ -1,6 +1,6 @@
 package tasks;
 
-import TaskService.Status;
+import taskservice.Status;
 
 import java.util.Objects;
 

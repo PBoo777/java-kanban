@@ -1,8 +1,8 @@
 package test;
 
-import TaskService.InMemoryTaskManager;
-import TaskService.Managers;
-import TaskService.Status;
+import taskservice.InMemoryTaskManager;
+import taskservice.Managers;
+import taskservice.Status;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;

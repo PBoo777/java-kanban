@@ -1,8 +1,8 @@
 package test;
 
-import TaskService.Managers;
-import TaskService.Status;
-import TaskService.TaskManager;
+import taskservice.Managers;
+import taskservice.Status;
+import taskservice.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import tasks.Epic;

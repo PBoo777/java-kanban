@@ -1,4 +1,4 @@
-package TaskService;
+package taskservice;
 
 import tasks.Task;
 
