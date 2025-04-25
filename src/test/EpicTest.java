@@ -22,7 +22,8 @@ class EpicTest {
         assertEquals("Tasks.Epic", savedEpic1.getClass().getName(), "Задача другого типа.");
         assertEquals(savedEpic1.getId(), savedEpic2.getId(), "ID задач не совпадают.");
         assertEquals(savedEpic1.getSubTaskIds(), savedEpic2.getSubTaskIds(), "Списки подзадач не совпадают");
-        assertEquals(savedEpic1.getSubTaskStatuses(), savedEpic2.getSubTaskStatuses(), "Списки подзадач не совпадают");
+        assertEquals(savedEpic1.getSubTaskStatuses(), savedEpic2.getSubTaskStatuses(),
+                "Списки подзадач не совпадают");
         assertEquals(savedEpic1, savedEpic2, "Задачи не совпадают.");
     }
 }

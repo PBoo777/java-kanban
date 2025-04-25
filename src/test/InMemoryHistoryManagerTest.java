@@ -20,11 +20,10 @@ class InMemoryHistoryManagerTest {
         Task originTask = new Task("Name", "Description", Status.NEW);
         Task newTask = new Task("AnotherName", "AnotherDescription", Status.IN_PROGRESS);
         int taskId = inMemoryTaskManager.createTask(originTask);
-
         Task task = inMemoryTaskManager.getTaskById(taskId);
         inMemoryTaskManager.updateTask(newTask, taskId);
-        assertEquals(task, inMemoryTaskManager.getHistory().getLast()
-                ,"Предыдущая версия задачи не сохраняется.");
+        assertEquals(task, inMemoryTaskManager.getHistory().getLast(),
+                "Предыдущая версия задачи не сохраняется.");
     }
 
     @Test
@@ -35,12 +34,11 @@ class InMemoryHistoryManagerTest {
         int epic1Id = inMemoryTaskManager.createTask(epic1);
         int epic2Id = inMemoryTaskManager.createTask(epic2);
         SubTask originSubTask = new SubTask("Name", "Description", Status.NEW, epic1Id);
-        SubTask newSubTask = new SubTask("AnotherName", "AnotherDescription", Status.IN_PROGRESS, epic2Id);
+        SubTask newSubTask = new SubTask("AnotherName", "AnotherDescription",
+                Status.IN_PROGRESS, epic2Id);
         int subTaskId = inMemoryTaskManager.createTask(originSubTask);
-
         SubTask subTask = (SubTask) inMemoryTaskManager.getTaskById(subTaskId);
         inMemoryTaskManager.updateTask(newSubTask, subTaskId);
-
         SubTask historyTask = (SubTask) inMemoryTaskManager.getHistory().getLast();
 
         assertEquals(subTask.getOwnerId(), historyTask.getOwnerId(), "Эпики не совпадают");
@@ -84,18 +82,17 @@ class InMemoryHistoryManagerTest {
         inMemoryTaskManager.getTaskById(taskId);  // Просмотр 4(второй раз)
         inMemoryTaskManager.getTaskById(taskId);  // Просмотр 4(третий раз)
 
-        assertEquals(4, inMemoryTaskManager.getHistory().size()
-                , "Количество сохранённых задач в истории отлично от 4");
-        assertNotEquals(inMemoryTaskManager.getHistory().get(inMemoryTaskManager.getHistory().size()-2)
-                , inMemoryTaskManager.getHistory().getLast()
-                ,"Последняя задача дублирует предпоследнюю");
+        assertEquals(4, inMemoryTaskManager.getHistory().size(),
+                 "Количество сохранённых задач в истории отлично от 4");
+        assertNotEquals(inMemoryTaskManager.getHistory().get(inMemoryTaskManager.getHistory().size() - 2),
+                inMemoryTaskManager.getHistory().getLast(), "Последняя задача дублирует предпоследнюю");
 
         inMemoryTaskManager.getTaskById(originTaskId);  // Просмотр 1(второй раз)
 
-        assertEquals(4, inMemoryTaskManager.getHistory().size()
-                , "Количество сохранённых задач в истории отлично от 4");
-        assertNotEquals(inMemoryTaskManager.getHistory().getFirst(), inMemoryTaskManager.getHistory().getLast()
-                ,"Последняя задача дублирует первую");
+        assertEquals(4, inMemoryTaskManager.getHistory().size(),
+                 "Количество сохранённых задач в истории отлично от 4");
+        assertNotEquals(inMemoryTaskManager.getHistory().getFirst(), inMemoryTaskManager.getHistory().getLast(),
+                "Последняя задача дублирует первую");
     }
 
     @Test
@@ -115,9 +112,9 @@ class InMemoryHistoryManagerTest {
         inMemoryTaskManager.getTaskById(taskId);  // Просмотр 4
         inMemoryTaskManager.getHistoryManager().remove(originTaskId); // Удаление просмотра 1
 
-        assertEquals(3, inMemoryTaskManager.getHistory().size()
-                , "Количество сохранённых задач в истории отлично от 3");
-        assertNotEquals(inMemoryTaskManager.getHistory().getFirst(), originTask
-                ,"Первая задача не удалена из истории");
+        assertEquals(3, inMemoryTaskManager.getHistory().size(),
+                 "Количество сохранённых задач в истории отлично от 3");
+        assertNotEquals(inMemoryTaskManager.getHistory().getFirst(), originTask,
+                "Первая задача не удалена из истории");
     }
 }

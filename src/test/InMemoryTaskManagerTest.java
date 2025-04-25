@@ -35,7 +35,8 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("EpicName", "EpicDescription");
         int epicId = inMemoryTaskManager.createTask(epic);
         SubTask subTask = new SubTask("SubName", "SubDescription", Status.NEW, epicId);
-        int taskId = inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription", Status.IN_PROGRESS));
+        int taskId = inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription",
+                Status.IN_PROGRESS));
         inMemoryTaskManager.createTask(subTask);
         inMemoryTaskManager.removeTaskById(taskId);
 

@@ -27,8 +27,8 @@ public class InMemoryTaskManager implements TaskManager{
             }
         } else if (task instanceof SubTask subTask) {
             if (!subTaskHashMap.containsValue(subTask)) {
-                SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus()
-                        , epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
+                SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(),
+                        epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
                 newSubTask.setId(++id);
                 subTaskHashMap.put(newSubTask.getId(), newSubTask);
                 if (newSubTask.getOwnerId() != 0) {
@@ -56,8 +56,8 @@ public class InMemoryTaskManager implements TaskManager{
             newEpic.updateStatus();
             epicHashMap.put(id, newEpic);
         } else if (task instanceof SubTask subTask) {
-            SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus()
-                    , epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
+            SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(),
+                    epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
             subTaskHashMap.put(id, newSubTask);
             if (newSubTask.getOwnerId() != 0) {
                 epicHashMap.get(newSubTask.getOwnerId()).setOneSubTask(newSubTask);
@@ -111,8 +111,8 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public Task getTaskById(int id) {
         if (taskHashMap.containsKey(id)) {
-            Task newTask = new Task(taskHashMap.get(id).getName(), taskHashMap.get(id).getDescription()
-                    , taskHashMap.get(id).getStatus());
+            Task newTask = new Task(taskHashMap.get(id).getName(), taskHashMap.get(id).getDescription(),
+                    taskHashMap.get(id).getStatus());
             newTask.setId(id);
             historyManager.add(newTask);
             return newTask;
@@ -127,8 +127,8 @@ public class InMemoryTaskManager implements TaskManager{
             return newEpic;
         }
         if (subTaskHashMap.containsKey(id)) {
-            SubTask newSubTask = new SubTask(subTaskHashMap.get(id).getName(), subTaskHashMap.get(id).getDescription()
-                    , subTaskHashMap.get(id).getStatus(), subTaskHashMap.get(id).getOwnerId());
+            SubTask newSubTask = new SubTask(subTaskHashMap.get(id).getName(), subTaskHashMap.get(id).getDescription(),
+                    subTaskHashMap.get(id).getStatus(), subTaskHashMap.get(id).getOwnerId());
             newSubTask.setId(id);
             historyManager.add(newSubTask);
             return newSubTask;
