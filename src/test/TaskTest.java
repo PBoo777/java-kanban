@@ -1,8 +1,8 @@
 package test;
 
-import taskService.Managers;
-import taskService.Status;
-import taskService.TaskManager;
+import TaskService.Managers;
+import TaskService.Status;
+import TaskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
