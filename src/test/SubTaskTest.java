@@ -22,7 +22,7 @@ class SubTaskTest {
         SubTask savedSubTask2 = (SubTask) inMemoryTaskManager.getTaskById(subTaskId);
 
         assertNotNull(savedSubTask1, "Задача не найдена.");
-        assertEquals("Tasks.SubTask", savedSubTask1.getClass().getName(), "Задача другого типа.");
+        assertEquals("tasks.SubTask", savedSubTask1.getClass().getName(), "Задача другого типа.");
         assertEquals(savedSubTask1.getId(), savedSubTask2.getId(), "ID задач не совпадают.");
         assertEquals(savedSubTask1.getOwnerId(), savedSubTask2.getOwnerId(), "Эпик не совпадает.");
         assertEquals(savedSubTask1, savedSubTask2, "Задачи не совпадают.");

@@ -71,17 +71,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void printAllTasks(String className) {
         switch (className) {
-            case "Tasks.Task":
+            case "tasks.Task":
                 for (Task task : taskHashMap.values()) {
                     System.out.println(task);
                 }
                 break;
-            case "Tasks.Epic":
+            case "tasks.Epic":
                 for (Epic epic : epicHashMap.values()) {
                     System.out.println(epic);
                 }
                 break;
-            case "Tasks.SubTask":
+            case "tasks.SubTask":
                 for (SubTask subTask : subTaskHashMap.values()) {
                     System.out.println(subTask);
                 }
@@ -94,13 +94,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllTasks(String className) {
         switch (className) {
-            case "Tasks.Task":
+            case "tasks.Task":
                 taskHashMap.clear();
                 break;
-            case "Tasks.Epic":
+            case "tasks.Epic":
                 epicHashMap.clear();
                 break;
-            case "Tasks.SubTask":
+            case "tasks.SubTask":
                 subTaskHashMap.clear();
                 break;
             default:

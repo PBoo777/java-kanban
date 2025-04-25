@@ -22,7 +22,7 @@ class TaskTest {
         Task savedTask2 = inMemoryTaskManager.getTaskById(taskId);
 
         assertNotNull(savedTask1, "Задача не найдена.");
-        assertEquals("Tasks.Task", savedTask1.getClass().getName(), "Задача другого типа.");
+        assertEquals("tasks.Task", savedTask1.getClass().getName(), "Задача другого типа.");
         assertEquals(savedTask1.getId(), savedTask2.getId(), "ID задач не совпадают.");
         assertEquals(savedTask1, savedTask2, "Задачи не совпадают.");
     }
