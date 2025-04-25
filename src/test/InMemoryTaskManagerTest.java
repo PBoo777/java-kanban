@@ -20,9 +20,9 @@ class InMemoryTaskManagerTest {
         SubTask subTask = new SubTask("SubName", "SubDescription", Status.NEW, epicId);
         inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription", Status.IN_PROGRESS));
         inMemoryTaskManager.createTask(subTask);
-        inMemoryTaskManager.removeAllTasks("Tasks.Task");
-        inMemoryTaskManager.removeAllTasks("Tasks.Epic");
-        inMemoryTaskManager.removeAllTasks("Tasks.SubTask");
+        inMemoryTaskManager.removeAllTasks("tasks.Task");
+        inMemoryTaskManager.removeAllTasks("tasks.Epic");
+        inMemoryTaskManager.removeAllTasks("tasks.SubTask");
 
         assertTrue(inMemoryTaskManager.getTaskHashMap().isEmpty(), "Список задач не очищен");
         assertTrue(inMemoryTaskManager.getEpicHashMap().isEmpty(), "Список эпиков не очищен");

@@ -10,10 +10,10 @@ class ManagersTest {
     @Test
     public void managersReturnNotNullObjects() {
         Assertions.assertNotNull(Managers.getDefault(), "Объект не найден.");
-        assertEquals("TaskService.InMemoryTaskManager", Managers.getDefault().getClass().getName(),
+        assertEquals("taskservice.InMemoryTaskManager", Managers.getDefault().getClass().getName(),
                  "Объект другого типа.");
         assertNotNull(Managers.getDefaultHistory(), "Объект не найден.");
-        assertEquals("TaskService.InMemoryHistoryManager", Managers.getDefaultHistory().getClass().getName(),
+        assertEquals("taskservice.InMemoryHistoryManager", Managers.getDefaultHistory().getClass().getName(),
                  "Объект другого типа.");
     }
 }
