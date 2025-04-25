@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
 
     private Node head;
     private Node tail;
@@ -16,7 +16,7 @@ public class InMemoryHistoryManager implements HistoryManager{
     public void add(Task task) {
         if (taskViewsHashMap.containsKey(task.getId())) {
             Node node = taskViewsHashMap.get(task.getId());
-            if (node != tail){
+            if (node != tail) {
                 removeNode(node);
                 tail.next = node;
                 node.next = null;
