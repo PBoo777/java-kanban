@@ -13,7 +13,7 @@ class SubTaskTest {
     TaskManager inMemoryTaskManager = Managers.getDefault();
 
     @Test
-    public void SubTasksCorrectSavedAndReturnById() {
+    public void subTasksCorrectSavedAndReturnById() {
         Epic epic = new Epic("EName", "EDescription1");
         int epicId = inMemoryTaskManager.createTask(epic);
         SubTask subTask = new SubTask("Name1", "Description1", Status.NEW, epicId);

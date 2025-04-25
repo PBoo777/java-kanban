@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class TaskTest {
 
     @Test
-    public void TasksCorrectSavedAndReturnById() {
+    public void tasksCorrectSavedAndReturnById() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task = new Task("Name1", "Description1", Status.NEW);
         int TaskId = inMemoryTaskManager.createTask(task);
@@ -28,7 +28,7 @@ class TaskTest {
     }
 
     @Test
-    public void TasksEqualsIfIdEquals() {
+    public void tasksEqualsIfIdEquals() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         int[] idArray = new int[20];
         ArrayList<Task> tasks = new ArrayList<>();

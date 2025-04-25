@@ -15,7 +15,7 @@ class InMemoryHistoryManagerTest {
 
 
     @Test
-    public void TasksCorrectSavedToHistory() {
+    public void tasksCorrectSavedToHistory() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task originTask = new Task("Name", "Description", Status.NEW);
         Task newTask = new Task("AnotherName", "AnotherDescription", Status.IN_PROGRESS);

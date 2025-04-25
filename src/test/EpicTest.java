@@ -11,7 +11,7 @@ class EpicTest {
     TaskManager inMemoryTaskManager = Managers.getDefault();
 
     @Test
-    public void EpicsCorrectSavedAndReturnById() {
+    public void epicsCorrectSavedAndReturnById() {
 
         Epic originEpic = new Epic("Name1", "Description1");
         int epicId = inMemoryTaskManager.createTask(originEpic);
