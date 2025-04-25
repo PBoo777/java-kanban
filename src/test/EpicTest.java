@@ -1,10 +1,10 @@
-package Test;
+package test;
 
-import TaskService.Managers;
-import TaskService.TaskManager;
+import taskService.Managers;
+import taskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
-import Tasks.Epic;
+import tasks.Epic;
 import org.junit.jupiter.api.Test;
 
 class EpicTest {

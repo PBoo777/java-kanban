@@ -1,14 +1,14 @@
-package Test;
+package test;
 
-import TaskService.Managers;
-import TaskService.Status;
-import TaskService.TaskManager;
+import taskService.Managers;
+import taskService.Status;
+import taskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import Tasks.Task;
+import tasks.Task;
 import org.junit.jupiter.api.Test;
 
 class TaskTest {

@@ -1,9 +1,9 @@
-package TaskService;
+package taskService;
 
 import java.util.HashMap;
 import java.util.List;
 
-import Tasks.*;
+import tasks.*;
 
 public class InMemoryTaskManager implements TaskManager{
 

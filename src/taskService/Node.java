@@ -1,6 +1,6 @@
-package TaskService;
+package taskService;
 
-import Tasks.Task;
+import tasks.Task;
 
 public class Node {
 

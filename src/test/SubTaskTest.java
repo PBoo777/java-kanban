@@ -1,12 +1,12 @@
-package Test;
+package test;
 
-import TaskService.Managers;
-import TaskService.Status;
-import TaskService.TaskManager;
+import taskService.Managers;
+import taskService.Status;
+import taskService.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
-import Tasks.Epic;
-import Tasks.SubTask;
+import tasks.Epic;
+import tasks.SubTask;
 import org.junit.jupiter.api.Test;
 
 class SubTaskTest {

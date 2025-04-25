@@ -1,7 +1,7 @@
-package TaskService;
+package taskService;
 
-import Tasks.Epic;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Task;
 import java.util.List;
 
 public interface TaskManager {

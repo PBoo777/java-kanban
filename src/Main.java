@@ -1,9 +1,9 @@
-import TaskService.InMemoryTaskManager;
-import TaskService.Status;
-import TaskService.TaskManager;
-import Tasks.Epic;
-import Tasks.SubTask;
-import Tasks.Task;
+import taskService.InMemoryTaskManager;
+import taskService.Status;
+import taskService.TaskManager;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
 
 public class Main {
     public static void main(String[] args) {

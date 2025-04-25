@@ -1,4 +1,4 @@
-package TaskService;
+package taskService;
 
 public enum Status {
     NEW,
