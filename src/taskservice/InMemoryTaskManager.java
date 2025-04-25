@@ -5,7 +5,7 @@ import java.util.List;
 
 import tasks.*;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
 
     private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
