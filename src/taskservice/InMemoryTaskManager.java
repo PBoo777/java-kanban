@@ -133,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(newSubTask);
             return newSubTask;
         }
-        return null;
+        return new Task("Default", "Default", Status.NEW);
     }
 
     @Override
