@@ -1,24 +1,28 @@
-package Tasks;
+package tasks;
 
-import TaskService.Status;
+import taskservice.Status;
 
 public class SubTask extends Task {
 
-    private final Epic owner;
+    private int ownerId;
 
-    public SubTask(String name, String description, Status status, Epic owner) {
+    public SubTask(String name, String description, Status status, int ownerId) {
         super(name, description, status);
-        this.owner = owner;
+        this.ownerId = ownerId;
     }
 
-    public Epic getOwner() {
-        return owner;
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int id) {
+        ownerId = id;
     }
 
     @Override
     public String toString() {
         return "Tasks.SubTask {" +
-                "owner id = " + owner.id +
+                "owner id = " + ownerId +
                 ", description = '" + description + '\'' +
                 ", id = " + id +
                 ", name = '" + name + '\'' +
