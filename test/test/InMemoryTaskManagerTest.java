@@ -39,7 +39,8 @@ class InMemoryTaskManagerTest {
                 Status.IN_PROGRESS));
         inMemoryTaskManager.createTask(subTask);
         inMemoryTaskManager.removeTaskById(taskId);
+        Task task = new Task("Default", "Default", Status.NEW);
 
-        assertNull(inMemoryTaskManager.getTaskById(taskId));
+        assertEquals(task, inMemoryTaskManager.getTaskById(taskId), "Не является дефолтным объектом задачи");
     }
 }
