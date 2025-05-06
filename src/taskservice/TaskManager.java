@@ -10,9 +10,9 @@ public interface TaskManager {
 
     void updateTask(Task task, int id);
 
-    void printAllTasks(String className);
+    void printAllTasks(TaskTypes type);
 
-    void removeAllTasks(String className);
+    void removeAllTasks(TaskTypes type);
 
     Task getTaskById(int id);
 

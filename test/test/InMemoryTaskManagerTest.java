@@ -7,6 +7,8 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 import org.junit.jupiter.api.Test;
+import taskservice.TaskTypes;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -20,9 +22,9 @@ class InMemoryTaskManagerTest {
         SubTask subTask = new SubTask("SubName", "SubDescription", Status.NEW, epicId);
         inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription", Status.IN_PROGRESS));
         inMemoryTaskManager.createTask(subTask);
-        inMemoryTaskManager.removeAllTasks("tasks.Task");
-        inMemoryTaskManager.removeAllTasks("tasks.Epic");
-        inMemoryTaskManager.removeAllTasks("tasks.SubTask");
+        inMemoryTaskManager.removeAllTasks(TaskTypes.TASK);
+        inMemoryTaskManager.removeAllTasks(TaskTypes.EPIC);
+        inMemoryTaskManager.removeAllTasks(TaskTypes.SUBTASK);
 
         assertTrue(inMemoryTaskManager.getTaskHashMap().isEmpty(), "Список задач не очищен");
         assertTrue(inMemoryTaskManager.getEpicHashMap().isEmpty(), "Список эпиков не очищен");

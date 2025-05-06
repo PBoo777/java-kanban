@@ -7,11 +7,11 @@ import tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    private final HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
-    private int id = 1;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    HashMap<Integer, Epic> epicHashMap = new HashMap<>();
+    HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
+    int id = 1;
+    final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public int createTask(Task task) {
@@ -20,7 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic newEpic = new Epic(epic.getName(), epic.getDescription());
                 newEpic.setSubTaskIds(epic.getSubTaskIds());
                 newEpic.setSubTaskStatuses(epic.getSubTaskStatuses());
-                newEpic.setId(++id);
+                newEpic.setId(id++);
                 newEpic.updateStatus();
                 epicHashMap.put(newEpic.getId(), newEpic);
                 return newEpic.getId();
@@ -29,7 +29,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (!subTaskHashMap.containsValue(subTask)) {
                 SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(),
                         epicHashMap.containsKey(subTask.getOwnerId()) ? subTask.getOwnerId() : 0);
-                newSubTask.setId(++id);
+                newSubTask.setId(id++);
                 subTaskHashMap.put(newSubTask.getId(), newSubTask);
                 if (newSubTask.getOwnerId() != 0) {
                     epicHashMap.get(newSubTask.getOwnerId()).setOneSubTask(newSubTask);
@@ -39,7 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             if (!taskHashMap.containsValue(task)) {
                 Task newTask = new Task(task.getName(), task.getDescription(), task.getStatus());
-                newTask.setId(++id);
+                newTask.setId(id++);
                 taskHashMap.put(newTask.getId(), newTask);
                 return newTask.getId();
             }
@@ -69,19 +69,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void printAllTasks(String className) {
-        switch (className) {
-            case "tasks.Task":
+    public void printAllTasks(TaskTypes type) {
+        switch (type) {
+            case TASK:
                 for (Task task : taskHashMap.values()) {
                     System.out.println(task);
                 }
                 break;
-            case "tasks.Epic":
+            case EPIC:
                 for (Epic epic : epicHashMap.values()) {
                     System.out.println(epic);
                 }
                 break;
-            case "tasks.SubTask":
+            case SUBTASK:
                 for (SubTask subTask : subTaskHashMap.values()) {
                     System.out.println(subTask);
                 }
@@ -92,15 +92,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeAllTasks(String className) {
-        switch (className) {
-            case "tasks.Task":
+    public void removeAllTasks(TaskTypes type) {
+        switch (type) {
+            case TASK:
                 taskHashMap.clear();
                 break;
-            case "tasks.Epic":
+            case EPIC:
                 epicHashMap.clear();
                 break;
-            case "tasks.SubTask":
+            case SUBTASK:
                 subTaskHashMap.clear();
                 break;
             default:
@@ -179,6 +179,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     public HashMap<Integer, SubTask> getSubTaskHashMap() {
         return subTaskHashMap;
+    }
+
+    public int getTasksAmount() {
+        return subTaskHashMap.size() + taskHashMap.size() + epicHashMap.size();
     }
 
 }
