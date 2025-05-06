@@ -4,8 +4,6 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -87,7 +85,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             writer.write("Subtask: id,name,description,status,ownerId\n");
             writer.write("------------------------------------------\n");
             int iteratedId = 1;
-            while (true){
+            while (true) {
                 if (taskHashMap.containsKey(iteratedId)) {
                     writer.write(taskToString(taskHashMap.get(iteratedId)));
                 } else if (epicHashMap.containsKey(iteratedId)) {
