@@ -227,8 +227,4 @@ public class InMemoryTaskManager implements TaskManager {
         return subTaskHashMap;
     }
 
-    public int getTasksAmount() {
-        return subTaskHashMap.size() + taskHashMap.size() + epicHashMap.size();
-    }
-
 }

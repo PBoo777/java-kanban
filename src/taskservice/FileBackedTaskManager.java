@@ -185,9 +185,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Task task2 = new Task("Учёба", "Позаниматься на других материалах", Status.DONE);
         Task task3 = new Task("Учёба", "Поучить английский", Status.NEW);
 
-        int id1 = fileBackedTaskManager.createTask(task1);
-        int id2 = fileBackedTaskManager.createTask(task2);
-        int id3 = fileBackedTaskManager.createTask(task3);
+        fileBackedTaskManager.createTask(task1);
+        fileBackedTaskManager.createTask(task2);
+        fileBackedTaskManager.createTask(task3);
         Epic epic1 = new Epic("Дела по хозяйству", "Ремонт");
         Epic epic2 = new Epic("Работа", "Задачи по текущей работе");
 
