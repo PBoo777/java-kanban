@@ -1,33 +1,34 @@
-package Test;
+package test;
 
-import TaskService.Managers;
-import TaskService.Status;
-import TaskService.TaskManager;
+import taskservice.Managers;
+import taskservice.Status;
+import taskservice.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import Tasks.Task;
+import tasks.Task;
 import org.junit.jupiter.api.Test;
 
 class TaskTest {
 
     @Test
-    public void TasksCorrectSavedAndReturnById() {
+    public void tasksCorrectSavedAndReturnById() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task = new Task("Name1", "Description1", Status.NEW);
-        int TaskId = inMemoryTaskManager.createTask(task);
-        Task savedTask = inMemoryTaskManager.getTaskById(TaskId);
+        int taskId = inMemoryTaskManager.createTask(task);
+        Task savedTask1 = inMemoryTaskManager.getTaskById(taskId);
+        Task savedTask2 = inMemoryTaskManager.getTaskById(taskId);
 
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals("Tasks.Task", savedTask.getClass().getName(), "Задача другого типа.");
-        assertEquals(task.getId(), savedTask.getId(), "ID задач не совпадают.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
+        assertNotNull(savedTask1, "Задача не найдена.");
+        assertEquals("tasks.Task", savedTask1.getClass().getName(), "Задача другого типа.");
+        assertEquals(savedTask1.getId(), savedTask2.getId(), "ID задач не совпадают.");
+        assertEquals(savedTask1, savedTask2, "Задачи не совпадают.");
     }
 
     @Test
-    public void TasksEqualsIfIdEquals() {
+    public void tasksEqualsIfIdEquals() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         int[] idArray = new int[20];
         ArrayList<Task> tasks = new ArrayList<>();
@@ -50,9 +51,10 @@ class TaskTest {
         }
         Random rnd = new Random();
         int index = rnd.nextInt(20);
+        Task task1 = inMemoryTaskManager.getTaskById(idArray[index]);
+        Task task2 = inMemoryTaskManager.getTaskById(idArray[index]);
 
-        assertEquals(inMemoryTaskManager.getTaskById(idArray[index]).getId(), tasks.get(index).getId()
-                , "ID задач совпадают");
-        assertEquals(inMemoryTaskManager.getTaskById(idArray[index]), tasks.get(index), "Задачи совпадают");
+        assertEquals(task1.getId(), task2.getId(), "ID задач совпадают");
+        assertEquals(task1, task2, "Задачи совпадают");
     }
 }
