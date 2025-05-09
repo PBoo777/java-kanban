@@ -20,7 +20,7 @@ class FileBackedTaskManagerTest {
         File file = new File("TestSave.txt");
         File newFile = new File("ControlTestSave.txt");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getName());
-        fileBackedTaskManager.save(file.getName());
+        fileBackedTaskManager.save();
         String content;
         try {
             content  = Files.readString(file.toPath());
@@ -31,7 +31,8 @@ class FileBackedTaskManagerTest {
         assertTrue(file.exists(), "Файл не был создан");
         assertEquals(4, lines.length, "Число строк в файле не соответствует начальному состоянию");
         FileBackedTaskManager newFileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
-        newFileBackedTaskManager.save(newFile.getName());
+        newFileBackedTaskManager.setFileName(newFile.getName());
+        newFileBackedTaskManager.save();
         String newContent;
         try {
             newContent  = Files.readString(newFile.toPath());
@@ -67,7 +68,8 @@ class FileBackedTaskManagerTest {
         assertEquals(8, lines.length, "Число строк в файле не соответствует ожидаемому");
 
         FileBackedTaskManager newFileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
-        newFileBackedTaskManager.save(newFile.getName());
+        newFileBackedTaskManager.setFileName(newFile.getName());
+        newFileBackedTaskManager.save();
         String newContent;
         try {
             newContent  = Files.readString(newFile.toPath());

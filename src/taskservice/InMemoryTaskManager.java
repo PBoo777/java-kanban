@@ -13,6 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     int id = 1;
     final HistoryManager historyManager = Managers.getDefaultHistory();
 
+
     @Override
     public int createTask(Task task) {
         if (task instanceof Epic epic) {
@@ -70,20 +71,65 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void printAllTasks(TaskTypes type) {
+        int nameMaxLength = 0;
+        int descriptionMaxLength = 0;
+        for (Task task : taskHashMap.values()) {
+            if (task.getName().length() > nameMaxLength) {
+                nameMaxLength = task.getName().length();
+            }
+            if (task.getDescription().length() > descriptionMaxLength) {
+                descriptionMaxLength = task.getDescription().length();
+            }
+        }
+        for (Epic epic : epicHashMap.values()) {
+            if (epic.getName().length() > nameMaxLength) {
+                nameMaxLength = epic.getName().length();
+            }
+            if (epic.getDescription().length() > descriptionMaxLength) {
+                descriptionMaxLength = epic.getDescription().length();
+            }
+        }
+        for (SubTask subTask : subTaskHashMap.values()) {
+            if (subTask.getName().length() > nameMaxLength) {
+                nameMaxLength = subTask.getName().length();
+            }
+            if (subTask.getDescription().length() > descriptionMaxLength) {
+                descriptionMaxLength = subTask.getDescription().length();
+            }
+        }
+        String s = "%-9s id = %-4s name = '%" + (nameMaxLength * (-1) - 4) + "s description " +
+                "= '%" + (descriptionMaxLength * (-1) - 4) + "s status = %-15s";
         switch (type) {
             case TASK:
                 for (Task task : taskHashMap.values()) {
-                    System.out.println(task);
+                    String sId = task.getId() + ",";
+                    String name = task.getName() + "',";
+                    String ds = task.getDescription() + "',";
+                    String sType = TaskTypes.TASK + ":";
+                    System.out.printf(s, sType, sId, name, ds, task.getStatus());
+                    System.out.println();
                 }
                 break;
             case EPIC:
                 for (Epic epic : epicHashMap.values()) {
-                    System.out.println(epic);
+                    String sId = epic.getId() + ",";
+                    String name = epic.getName() + "',";
+                    String ds = epic.getDescription() + "',";
+                    String sType = TaskTypes.EPIC + ":";
+                    String st = epic.getStatus() + ",";
+                    System.out.printf(s, sType, sId, name, ds, st);
+                    System.out.println("subTaskIds = " + epic.getSubTaskIds());
                 }
                 break;
             case SUBTASK:
                 for (SubTask subTask : subTaskHashMap.values()) {
-                    System.out.println(subTask);
+                    String sId = subTask.getId() + ",";
+                    String name = subTask.getName() + "',";
+                    String ds = subTask.getDescription() + "',";
+                    String sType = TaskTypes.SUBTASK + ":";
+                    String st = subTask.getStatus() + ",";
+                    System.out.printf(s, sType, sId, name, ds, st);
+                    System.out.println("owner id = " + subTask.getOwnerId());
                 }
                 break;
             default:

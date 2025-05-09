@@ -27,7 +27,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             HashMap<Integer, Task> newTaskHashMap = new HashMap<>();
             HashMap<Integer, Epic> newEpicHashMap = new HashMap<>();
             HashMap<Integer, SubTask> newSubTaskHashMap = new HashMap<>();
-            for (int i = 4; i < lines.length; i++) {
+            int startLine = lines.length;
+            for (int i = 0; i < lines.length; i++) {
+                String[] fields = lines[i].split(",");
+                boolean isValide;
+                if (fields.length >= 5) {
+                    try {
+                        Integer.parseInt(fields[0]);
+                        TaskTypes.valueOf(fields[1]);
+                        Status.valueOf(fields[4]);
+                        isValide = true;
+                    } catch (NullPointerException | IllegalArgumentException e) {
+                        isValide = false;
+                    }
+                    if (isValide) {
+                        startLine = i;
+                        break;
+                    }
+                }
+            }
+            for (int i = startLine; i < lines.length; i++) {
                 String[] fields = lines[i].split(",");
                 switch (fields[1]) {
                     case "EPIC":
@@ -78,7 +97,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBackedTaskManager;
     }
 
-    public void save(String fileName) {
+    public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write("Task: id,name,description,status\n");
             writer.write("Epic: id,name,description,status,subTaskStatuses,subTaskIds\n");
@@ -133,25 +152,72 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public int createTask(Task task) {
         int result = super.createTask(task);
-        save(fileName);
+        save();
         return result;
     }
 
     @Override
     public void updateTask(Task task, int id) {
         super.updateTask(task, id);
-        save(fileName);
+        save();
     }
 
     @Override
     public void removeAllTasks(TaskTypes type) {
         super.removeAllTasks(type);
-        save(fileName);
+        save();
     }
 
     @Override
     public void removeTaskById(int id) {
         super.removeTaskById(id);
-        save(fileName);
+        save();
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public static void main(String[] args) {
+        File file = new File("Save.txt");
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getName());
+        Task task1 = new Task("Учёба", "Пройти тему в Практикуме", Status.IN_PROGRESS);
+        Task task2 = new Task("Учёба", "Позаниматься на других материалах", Status.DONE);
+        Task task3 = new Task("Учёба", "Поучить английский", Status.NEW);
+
+        int id1 = fileBackedTaskManager.createTask(task1);
+        int id2 = fileBackedTaskManager.createTask(task2);
+        int id3 = fileBackedTaskManager.createTask(task3);
+        Epic epic1 = new Epic("Дела по хозяйству", "Ремонт");
+        Epic epic2 = new Epic("Работа", "Задачи по текущей работе");
+
+        int epic1Id = fileBackedTaskManager.createTask(epic1);
+        int epic2Id = fileBackedTaskManager.createTask(epic2);
+
+        SubTask subTask1 = new SubTask("Обои", "Найти и купить обои", Status.DONE, epic1Id);
+        SubTask subTask2 = new SubTask("Потолок", "Покрасить потолок", Status.DONE, epic1Id);
+        SubTask subTask3 = new SubTask("На работе", "Работать", Status.NEW, epic2Id);
+        SubTask subTask4 = new SubTask("Санузел", "Поклеить плитку", Status.DONE, epic1Id);
+        SubTask subTask5 = new SubTask("Вне работы", "Отдыхать", Status.IN_PROGRESS, epic2Id);
+
+        fileBackedTaskManager.createTask(subTask1);
+        fileBackedTaskManager.createTask(subTask2);
+        fileBackedTaskManager.createTask(subTask3);
+        fileBackedTaskManager.createTask(subTask4);
+        fileBackedTaskManager.createTask(subTask5);
+
+        System.out.println("Оригинальный fileBackedTaskManager:");
+        System.out.println();
+        fileBackedTaskManager.printAllTasks(TaskTypes.TASK);
+        fileBackedTaskManager.printAllTasks(TaskTypes.EPIC);
+        fileBackedTaskManager.printAllTasks(TaskTypes.SUBTASK);
+
+        System.out.println();
+        System.out.println("Копия fileBackedTaskManager:");
+        System.out.println();
+        FileBackedTaskManager f2 = FileBackedTaskManager.loadFromFile(file);
+        f2.printAllTasks(TaskTypes.TASK);
+        f2.printAllTasks(TaskTypes.EPIC);
+        f2.printAllTasks(TaskTypes.SUBTASK);
     }
 }
