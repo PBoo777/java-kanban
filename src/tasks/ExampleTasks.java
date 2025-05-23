@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 public class ExampleTasks {
-    public final static Task defaultTask = new Task("DEFAULT", "DEFAULT", Status.NEW, null,
+    public static final Task defaultTask = new Task("DEFAULT", "DEFAULT", Status.NEW, null,
             null);
 
     private static final Duration tenDays = Duration.ofDays(10);
