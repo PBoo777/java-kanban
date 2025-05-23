@@ -1,30 +1,19 @@
 package test;
 
-import taskservice.Managers;
-import taskservice.Status;
-import taskservice.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
-
-import tasks.Epic;
+import static tasks.ExampleTasks.*;
 import tasks.SubTask;
 import org.junit.jupiter.api.Test;
 
 class SubTaskTest {
-    TaskManager inMemoryTaskManager = Managers.getDefault();
 
     @Test
-    public void subTasksCorrectSavedAndReturnById() {
-        Epic epic = new Epic("EName", "EDescription1");
-        int epicId = inMemoryTaskManager.createTask(epic);
-        SubTask subTask = new SubTask("Name1", "Description1", Status.NEW, epicId);
-        int subTaskId = inMemoryTaskManager.createTask(subTask);
-        SubTask savedSubTask1 = (SubTask) inMemoryTaskManager.getTaskById(subTaskId);
-        SubTask savedSubTask2 = (SubTask) inMemoryTaskManager.getTaskById(subTaskId);
-
-        assertNotNull(savedSubTask1, "Задача не найдена.");
-        assertEquals("tasks.SubTask", savedSubTask1.getClass().getName(), "Задача другого типа.");
-        assertEquals(savedSubTask1.getId(), savedSubTask2.getId(), "ID задач не совпадают.");
-        assertEquals(savedSubTask1.getOwnerId(), savedSubTask2.getOwnerId(), "Эпик не совпадает.");
-        assertEquals(savedSubTask1, savedSubTask2, "Задачи не совпадают.");
+    public void subTasksCorrectEqualOverride() {
+        subTask1.setId(122);
+        subTask1.setOwnerId(332);
+        SubTask subTask = new SubTask(subTask1.getName(), subTask1.getDescription(), subTask1.getStatus(),
+                subTask1.getOwnerId(), subTask1.getStartTime(), subTask1.getDuration());
+        subTask.setId(subTask1.getId());
+        assertEquals(subTask1, subTask, "Метод equals в подзадаче реализован некорректно");
     }
 }

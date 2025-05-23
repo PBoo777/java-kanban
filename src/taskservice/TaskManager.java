@@ -12,6 +12,8 @@ public interface TaskManager {
 
     void printAllTasks(TaskTypes type);
 
+    void clear();
+
     void removeAllTasks(TaskTypes type);
 
     Task getTaskById(int id);

@@ -4,40 +4,40 @@ import taskservice.Managers;
 import taskservice.Status;
 import taskservice.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
+import static tasks.ExampleTasks.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Random;
-
 import tasks.Task;
 import org.junit.jupiter.api.Test;
 
 class TaskTest {
 
     @Test
-    public void tasksCorrectSavedAndReturnById() {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task = new Task("Name1", "Description1", Status.NEW);
-        int taskId = inMemoryTaskManager.createTask(task);
-        Task savedTask1 = inMemoryTaskManager.getTaskById(taskId);
-        Task savedTask2 = inMemoryTaskManager.getTaskById(taskId);
-
-        assertNotNull(savedTask1, "Задача не найдена.");
-        assertEquals("tasks.Task", savedTask1.getClass().getName(), "Задача другого типа.");
-        assertEquals(savedTask1.getId(), savedTask2.getId(), "ID задач не совпадают.");
-        assertEquals(savedTask1, savedTask2, "Задачи не совпадают.");
+    public void tasksCorrectEqualOverride() {
+        task1.setId(122);
+        Task task = new Task(task1.getName(), task1.getDescription(), task1.getStatus(), task1.getStartTime(),
+                task1.getDuration());
+        task.setId(task1.getId());
+        assertEquals(task1, task, "Метод equals в задаче реализован некорректно");
     }
 
     @Test
-    public void tasksEqualsIfIdEquals() {
+    public void tasksEqualsIfIdEqualsByRandomSample() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         int[] idArray = new int[20];
-        ArrayList<Task> tasks = new ArrayList<>();
         String name;
         String description;
         Status status;
+        LocalDateTime start = LocalDateTime.of(2025, Month.MAY, 15, 0, 0);
+        Duration dur = Duration.ofDays(1);
+        Duration durPlus = Duration.ofMinutes(1);
         for (int i = 0; i < 20; i++) {
             name = "Name" + i;
             description = "Description" + i;
+            start = start.plus(dur).plus(dur);
+            dur = dur.plus(durPlus);
             if (i % 3 == 0) {
                 status = Status.NEW;
             } else if (i % 2 == 0) {
@@ -45,16 +45,15 @@ class TaskTest {
             } else {
                 status = Status.DONE;
             }
-            Task task = new Task(name, description, status);
+            Task task = new Task(name, description, status, start, dur);
             idArray[i] = inMemoryTaskManager.createTask(task);
-            tasks.add(task);
         }
         Random rnd = new Random();
         int index = rnd.nextInt(20);
         Task task1 = inMemoryTaskManager.getTaskById(idArray[index]);
         Task task2 = inMemoryTaskManager.getTaskById(idArray[index]);
 
-        assertEquals(task1.getId(), task2.getId(), "ID задач совпадают");
-        assertEquals(task1, task2, "Задачи совпадают");
+        assertEquals(task1.getId(), task2.getId(), "ID задач не совпадают");
+        assertEquals(task1, task2, "Задачи не совпадают");
     }
 }

@@ -1,13 +1,16 @@
 package tasks;
 
 import taskservice.Status;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class SubTask extends Task {
 
     private int ownerId;
 
-    public SubTask(String name, String description, Status status, int ownerId) {
-        super(name, description, status);
+    public SubTask(String name, String description, Status status, int ownerId, LocalDateTime localDateTime,
+                   Duration duration) {
+        super(name, description, status, localDateTime, duration);
         this.ownerId = ownerId;
     }
 
@@ -21,12 +24,15 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "Tasks.SubTask {" +
-                "owner id = " + ownerId +
-                ", description = '" + description + '\'' +
-                ", id = " + id +
-                ", name = '" + name + '\'' +
-                ", status = " + status +
+        return "SubTask{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", ownerId=" + ownerId +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
                 '}';
     }
 }

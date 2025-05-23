@@ -2,19 +2,29 @@ package tasks;
 
 import taskservice.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
 
+    int id;
     String name;
     String description;
-    int id;
     Status status;
+    Duration duration;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.description = description;
         this.name = name;
         this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+        if ((this.startTime != null) && (this.duration != null)) {
+            endTime = this.startTime.plus(this.duration);
+        }
     }
 
     @Override
@@ -31,6 +41,10 @@ public class Task {
         if (status != null) {
             hash += status.hashCode();
         }
+        hash *= 43;
+        if (startTime != null) {
+            hash += startTime.hashCode();
+        }
         return hash;
     }
 
@@ -39,16 +53,20 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return Objects.equals(name, task.name) && Objects.equals(description, task.description)
-                && status == task.status && id == task.id;
+                && Objects.equals(status, task.status) && id == task.id && Objects.equals(startTime, task.startTime)
+                && Objects.equals(duration, task.duration) && Objects.equals(endTime, task.endTime);
     }
 
     @Override
     public String toString() {
-        return "Tasks.Task {" +
-                "description = '" + description + '\'' +
-                ", name = '" + name + '\'' +
-                ", id = " + id +
-                ", status = " + status +
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
                 '}';
     }
 
@@ -84,4 +102,23 @@ public class Task {
         this.status = status;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
 }

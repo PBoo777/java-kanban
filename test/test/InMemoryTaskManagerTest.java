@@ -2,47 +2,65 @@ package test;
 
 import taskservice.InMemoryTaskManager;
 import taskservice.Managers;
-import taskservice.Status;
-import tasks.Epic;
-import tasks.SubTask;
-import tasks.Task;
 import org.junit.jupiter.api.Test;
-import taskservice.TaskTypes;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Test
     void correctRemovedAllTasks() {
         InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
-        Epic epic = new Epic("EpicName", "EpicDescription");
-        int epicId = inMemoryTaskManager.createTask(epic);
-        SubTask subTask = new SubTask("SubName", "SubDescription", Status.NEW, epicId);
-        inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription", Status.IN_PROGRESS));
-        inMemoryTaskManager.createTask(subTask);
-        inMemoryTaskManager.removeAllTasks(TaskTypes.TASK);
-        inMemoryTaskManager.removeAllTasks(TaskTypes.EPIC);
-        inMemoryTaskManager.removeAllTasks(TaskTypes.SUBTASK);
-
+        removeAllTasksTest(inMemoryTaskManager);
         assertTrue(inMemoryTaskManager.getTaskHashMap().isEmpty(), "Список задач не очищен");
         assertTrue(inMemoryTaskManager.getEpicHashMap().isEmpty(), "Список эпиков не очищен");
         assertTrue(inMemoryTaskManager.getSubTaskHashMap().isEmpty(), "Список подзадач не очищен");
     }
 
     @Test
-    void removeTaskById() {
+    public void correctRemoveTaskById() {
         InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
-        Epic epic = new Epic("EpicName", "EpicDescription");
-        int epicId = inMemoryTaskManager.createTask(epic);
-        SubTask subTask = new SubTask("SubName", "SubDescription", Status.NEW, epicId);
-        int taskId = inMemoryTaskManager.createTask(new Task("TaskName", "TaskDescription",
-                Status.IN_PROGRESS));
-        inMemoryTaskManager.createTask(subTask);
-        inMemoryTaskManager.removeTaskById(taskId);
-        Task task = new Task("Default", "Default", Status.NEW);
+        removeTaskByIdTest(inMemoryTaskManager);
+    }
 
-        assertEquals(task, inMemoryTaskManager.getTaskById(taskId), "Не является дефолтным объектом задачи");
+    @Test
+    public void correctUpdateTask() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        updateTaskTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctCreateAndGetByIdEpic() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        createAndGetByIdEpicTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctCreateAndGetByIdTask() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        createAndGetByIdTaskTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctCreateAndGetByIdSubTask() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        createAndGetByIdSubTaskTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctEpicUpdateStatus() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        epicUpdateStatusTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctSubTaskSetOwner() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        subTaskSetOwnerTest(inMemoryTaskManager);
+    }
+
+    @Test
+    public void correctDisallowTaskByOverlappingTest() {
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+        disallowTaskByOverlappingTest(inMemoryTaskManager);
     }
 }
