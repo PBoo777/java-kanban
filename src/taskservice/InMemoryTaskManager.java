@@ -238,19 +238,19 @@ public class InMemoryTaskManager implements TaskManager {
     private void updateStatus(Epic epic) {
         if (epic.getSubTaskIds().isEmpty()) return;
         if (epic.getSubTaskIds().size() == 1) {
-            epic.setStatus(Objects.requireNonNull(subTaskHashMap.get(epic.getSubTaskIds().getFirst())).getStatus());
+            epic.setStatus(subTaskHashMap.get(epic.getSubTaskIds().getFirst()).getStatus());
             return;
         }
         for (int i = 0; i < epic.getSubTaskIds().size() - 1; i++) {
-            if (Objects.requireNonNull(subTaskHashMap.get(epic.getSubTaskIds().get(i)).getStatus())
-                    != Objects.requireNonNull(subTaskHashMap.get(epic.getSubTaskIds().get(i + 1)).getStatus())
-                    || Objects.requireNonNull(subTaskHashMap.get(epic.getSubTaskIds().get(i)).getStatus()) ==
+            if (subTaskHashMap.get(epic.getSubTaskIds().get(i)).getStatus()
+                    != subTaskHashMap.get(epic.getSubTaskIds().get(i + 1)).getStatus()
+                    || subTaskHashMap.get(epic.getSubTaskIds().get(i)).getStatus() ==
                     Status.IN_PROGRESS) {
                 epic.setStatus(Status.IN_PROGRESS);
                 return;
             }
         }
-        epic.setStatus(Objects.requireNonNull(subTaskHashMap.get(epic.getSubTaskIds().getFirst())).getStatus());
+        epic.setStatus(subTaskHashMap.get(epic.getSubTaskIds().getFirst()).getStatus());
     }
 
     private void setOneSubTaskToEpic(SubTask newSubTask, Epic epic) {
