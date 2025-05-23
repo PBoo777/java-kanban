@@ -283,15 +283,18 @@ public class InMemoryTaskManager implements TaskManager {
             }
         });
         if (epic.getSubTaskIds().stream().anyMatch(subTaskId -> subTaskHashMap.get(subTaskId).getStartTime() !=
-                null)) {epic.setStartTime(epic.getSubTaskIds().stream().map(subTaskId ->
+                null)) {
+            epic.setStartTime(epic.getSubTaskIds().stream().map(subTaskId ->
                 subTaskHashMap.get(subTaskId).getStartTime()).filter(Objects::nonNull).min(comparator).get());
         }
         if (epic.getSubTaskIds().stream().anyMatch(subTaskId -> subTaskHashMap.get(subTaskId).getEndTime() !=
-                null)) {epic.setEndTime(epic.getSubTaskIds().stream().map(subTaskId ->
+                null)) {
+            epic.setEndTime(epic.getSubTaskIds().stream().map(subTaskId ->
                 subTaskHashMap.get(subTaskId).getEndTime()).filter(Objects::nonNull).max(comparator).get());
         }
         if (epic.getSubTaskIds().stream().anyMatch(subTaskId -> subTaskHashMap.get(subTaskId).getDuration() !=
-                null)) {epic.setDuration(epic.getSubTaskIds().stream().map(subTaskId ->
+                null)) {
+            epic.setDuration(epic.getSubTaskIds().stream().map(subTaskId ->
                 subTaskHashMap.get(subTaskId).getDuration()).filter(Objects::nonNull).reduce(Duration::plus).get());
         }
     }
