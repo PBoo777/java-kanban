@@ -1,7 +1,7 @@
-package TaskService;
+package taskservice;
 
-import Tasks.Epic;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Task;
 import java.util.List;
 
 public interface TaskManager {
@@ -10,9 +10,11 @@ public interface TaskManager {
 
     void updateTask(Task task, int id);
 
-    void printAllTasks(String className);
+    void printAllTasks(TaskTypes type);
 
-    void removeAllTasks(String className);
+    void clear();
+
+    void removeAllTasks(TaskTypes type);
 
     Task getTaskById(int id);
 
