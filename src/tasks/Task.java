@@ -27,6 +27,14 @@ public class Task {
         }
     }
 
+    public Task selfClone() {
+        Task task = new Task(getName(), getDescription(), getStatus(),
+                getStartTime(), getDuration());
+        task.endTime = getEndTime();
+        task.setId(getId());
+        return task;
+    }
+
     @Override
     public int hashCode() {
         int hash = 13;

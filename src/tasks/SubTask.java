@@ -22,6 +22,14 @@ public class SubTask extends Task {
         ownerId = id;
     }
 
+    public SubTask selfClone() {
+        SubTask subTask = new SubTask(getName(), getDescription(), getStatus(), getOwnerId(), getStartTime(),
+                getDuration());
+        subTask.endTime = getEndTime();
+        subTask.setId(getId());
+        return subTask;
+    }
+
     @Override
     public String toString() {
         return "SubTask{" +

@@ -9,8 +9,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private Node head;
     private Node tail;
-    private int size;
-    final HashMap<Integer, Node> taskViewsHashMap = new HashMap<>();
+    private final HashMap<Integer, Node> taskViewsHashMap = new HashMap<>();
 
     @Override
     public void add(Task task) {

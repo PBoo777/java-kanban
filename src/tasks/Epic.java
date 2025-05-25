@@ -13,6 +13,17 @@ public class Epic extends Task {
         super(name, description, Status.NEW, null, null);
     }
 
+    public Epic selfClone() {
+        Epic epic = new Epic(getName(), getDescription());
+        epic.setStatus(getStatus());
+        epic.setSubTaskIds(getSubTaskIds());
+        epic.setStartTime(getStartTime());
+        epic.setDuration(getDuration());
+        epic.setEndTime(getEndTime());
+        epic.setId(getId());
+        return epic;
+    }
+
     public ArrayList<Integer> getSubTaskIds() {
         return new ArrayList<>(subTaskIds);
     }
