@@ -19,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     Set<Task> prioritizedTaskSet = new TreeSet<>((t1, t2) -> {
         if (t1.getStartTime().isAfter(t2.getStartTime())) {
             return 1;
-        } else{
+        } else {
             return -1;
         }
     });
