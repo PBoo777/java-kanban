@@ -16,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class TaskManagerTest<T extends TaskManager> {
 
     void updateTaskTest(T manager) {
-        int taskId = manager.createTask(task1);
+
         int epicId = manager.createTask(epic1);
         int subTaskId = manager.createTask(subTask1);
+        int taskId = manager.createTask(task1);
 
         manager.updateTask(task2, taskId);
         manager.updateTask(epic2, epicId);

@@ -31,7 +31,7 @@ public class Task {
         Task task = new Task(getName(), getDescription(), getStatus(),
                 getStartTime(), getDuration());
         task.endTime = getEndTime();
-        task.setId(getId());
+        task.setId(this.getId());
         return task;
     }
 

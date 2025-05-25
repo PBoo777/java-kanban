@@ -19,8 +19,10 @@ public class InMemoryTaskManager implements TaskManager {
     Set<Task> prioritizedTaskSet = new TreeSet<>((t1, t2) -> {
         if (t1.getStartTime().isAfter(t2.getStartTime())) {
             return 1;
-        } else {
+        } else if (t1.getStartTime().isBefore(t2.getStartTime()) && (!t1.equals(t2))) {
             return -1;
+        } else {
+            return 0;
         }
     });
 
@@ -78,7 +80,9 @@ public class InMemoryTaskManager implements TaskManager {
             epicHashMap.get(id).getSubTaskIds().forEach(subTaskId ->
                     subTaskHashMap.get(subTaskId).setOwnerId(0));
         }
-        prioritizedTaskSet.remove(getTaskFromHashMap(id));
+        if (!(getTaskFromHashMap(id) instanceof Epic epic)) {
+            prioritizedTaskSet.remove(getTaskFromHashMap(id));
+        }
         if (task instanceof Epic epic) {
             Epic newEpic = new Epic(epic.getName(), epic.getDescription());
             newEpic.setSubTaskIds(epic.getSubTaskIds());
@@ -110,6 +114,11 @@ public class InMemoryTaskManager implements TaskManager {
             if (disallowTaskByOverlapping(task)) return;
             Task newTask = new Task(task.getName(), task.getDescription(), task.getStatus(), task.getStartTime(),
                     task.getDuration());
+            if ((id <= 0) || (this.id <= id)) {
+                newTask.setId(this.id++);
+            } else {
+                newTask.setId(id);
+            }
             taskHashMap.put(id, newTask);
             if ((task.getStartTime() != null) && (task.getDuration() != null)) {
                 prioritizedTaskSet.add(newTask);
@@ -321,26 +330,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     private Task getTaskFromHashMap(int id) {
         if (taskHashMap.containsKey(id)) {
-            Task newTask = new Task(taskHashMap.get(id).getName(), taskHashMap.get(id).getDescription(),
-                    taskHashMap.get(id).getStatus(), taskHashMap.get(id).getStartTime(),
-                    taskHashMap.get(id).getDuration());
-            newTask.setId(id);
-            return newTask;
+            return taskHashMap.get(id).selfClone();
         }
         if (epicHashMap.containsKey(id)) {
-            Epic newEpic = new Epic(epicHashMap.get(id).getName(), epicHashMap.get(id).getDescription());
-            newEpic.setSubTaskIds(epicHashMap.get(id).getSubTaskIds());
-            updateStatus(newEpic);
-            updateTime(newEpic);
-            newEpic.setId(id);
-            return newEpic;
+            return epicHashMap.get(id).selfClone();
         }
         if (subTaskHashMap.containsKey(id)) {
-            SubTask newSubTask = new SubTask(subTaskHashMap.get(id).getName(), subTaskHashMap.get(id).getDescription(),
-                    subTaskHashMap.get(id).getStatus(), subTaskHashMap.get(id).getOwnerId(),
-                    subTaskHashMap.get(id).getStartTime(), subTaskHashMap.get(id).getDuration());
-            newSubTask.setId(id);
-            return newSubTask;
+            return subTaskHashMap.get(id).selfClone();
         }
         return defaultTask;
     }
